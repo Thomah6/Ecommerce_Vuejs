@@ -58,6 +58,6 @@ function addToCart({ id, quantity }) {
   <HeaderMain v-if="state" :state="state" :show-cart="showCart" @toggle-cart="showCart = !showCart" />
   <HeaderMain v-else :show-cart="showCart" @toggle-cart="showCart = !showCart" />
   <Cart :show-cart="showCart" @close-cart="showCart=false" />
-  <RouterView />
+  <RouterView @toggle-cart="showCart = !showCart" />
   <AddCart :show-modal="showModal"  />
 </template>

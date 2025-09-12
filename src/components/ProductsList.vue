@@ -23,7 +23,7 @@ function loadCart() {
 const cart = ref(loadCart())
 const cartProducts = computed(() => cart.value.map((item) => item.id))
 
-const emit = defineEmits(['open-add-cart', 'add-to-cart'])
+const emit = defineEmits(['open-add-cart', 'add-to-cart','toggleCart'])
 
 function openModal(product) {
     emit('open-add-cart', product)
@@ -123,7 +123,7 @@ function closeModal() {
                                 </svg>
                                 Add to cart
                             </button>
-                            <span v-else
+                            <span v-else @click="$emit('toggleCart')"
                                 class="inline-flex items-center rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white">
                                 View in cart
                             </span>
