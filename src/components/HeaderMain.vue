@@ -1,15 +1,50 @@
 <script setup>
+// Dans HeaderMain.vue
+import { inject,ref,onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
+const props = defineProps({
+  state: Boolean,
+  showCart:Boolean
+})
+const route = useRouter()
+const isLogged = ref(props.state || localStorage.getItem('token') === 'true')
 
+function updateLoginState() {
+  isLogged.value = localStorage.getItem('token') === 'true'
+}
 
+function logout() {
+  localStorage.setItem('token', 'false')
+  updateLoginState()
+  route.push('/login')
+}
 
+onMounted(() => {
+  window.addEventListener('storage', updateLoginState)
+})
+onUnmounted(() => {
+  window.removeEventListener('storage', updateLoginState)
+})
+
+const showCart = inject('showCart')
+console.log('showCart dans HeaderMain:', showCart) // Devrait affiger une référence
+
+function toggleCart() {
+  console.log('Avant toggle:', showCart.value)
+  showCart.value = !showCart.value
+  console.log('Après toggle:', showCart.value)
+}
+
+defineEmits(['toggleCart'])
 
 </script>
+
 <template>
 <!-- ========== HEADER ========== -->
 <header class="flex fixed top-0 shadow-b shadow-sm flex-wrap md:justify-start md:flex-nowrap z-50 w-full bg-white border-b border-gray-200">
   <nav class="relative max-w-[85rem] w-full mx-auto md:flex md:items-center md:justify-between md:gap-3 py-2 px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center gap-x-1">
-      <a class="flex-none font-semibold text-xl text-black focus:outline-hidden focus:opacity-80" href="#" aria-label="Brand">App</a>
+      <a class="flex-none font-bold text-2xl text-black focus:outline-hidden focus:opacity-80"  aria-label="Brand"><span class="text-white rounded bg-purple-500 pl-2 py-1">Dark</span>Shop</a>
       <!-- Collapse Button -->
       <button type="button" class="hs-collapse-toggle md:hidden relative size-9 flex justify-center items-center font-medium text-sm rounded-lg border border-gray-200 text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none" id="hs-header-base-collapse"  aria-expanded="false" aria-controls="hs-header-base" aria-label="Toggle navigation"  data-hs-collapse="#hs-header-base" >
         <svg class="hs-collapse-open:hidden size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
@@ -25,17 +60,15 @@
         <div class="py-2 md:py-0  flex flex-col md:flex-row md:items-center gap-0.5 md:gap-1">
           <div class="grow">
             <div class="flex flex-col md:flex-row md:justify-end md:items-center gap-0.5 md:gap-1">
-              <a class="p-2 flex items-center text-sm bg-gray-100 text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100" href="#" aria-current="page">
+              <RouterLink to="/" class="p-2 flex items-center text-sm bg-gray-100 text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100"  aria-current="page">
                 <svg class="shrink-0 size-4 me-3 md:me-2 block md:hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
                 Products
-              </a>
+              </RouterLink>
 
-
-
-              <a class="p-2 flex items-center text-sm text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100" href="#">
+              <button @click="$emit('toggleCart')" class="p-2 flex items-center text-sm text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-hidden focus:bg-gray-100" >
                 <svg class="shrink-0 size-4 me-3 md:me-2 block md:hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
                Cart
-              </a>
+              </button>
             </div>
           </div>
 
@@ -45,12 +78,15 @@
 
           <!-- Button Group -->
           <div class=" flex flex-wrap items-center gap-x-1.5">
-            <a class="py-[7px] px-2.5 inline-flex items-center font-medium text-sm rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100" href="#">
+            <RouterLink  v-if="!isLogged" to="/login" class="hover:bg-black/80 hover:text-white py-[7px] px-2.5 inline-flex items-center font-medium text-sm rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100" >
               Sign in
-            </a>
-            <a class="py-2 px-2.5 inline-flex items-center font-medium text-sm rounded-lg bg-purple-600 text-white hover:bg-purple-700 focus:outline-hidden focus:bg-purple-700 disabled:opacity-50 disabled:pointer-events-none" href="#">
+            </RouterLink >
+            <RouterLink  v-if="!isLogged" to="/signup" class="py-2 px-2.5 inline-flex items-center font-medium text-sm rounded-lg bg-purple-600 text-white hover:bg-purple-700 focus:outline-hidden focus:bg-purple-700 disabled:opacity-50 disabled:pointer-events-none" >
               Get started
-            </a>
+            </RouterLink>
+            <button v-else @click="logout" class="py-2 px-2.5 inline-flex items-center font-medium text-sm rounded-lg bg-purple-600 text-white hover:bg-purple-700 focus:outline-hidden focus:bg-purple-700 disabled:opacity-50 disabled:pointer-events-none" >
+              Logout
+            </button>
           </div>
           <!-- End Button Group -->
         </div>
@@ -59,4 +95,5 @@
     <!-- End Collapse -->
   </nav>
 </header>
-<!-- ========== END HEADER ========== --></template>
+<!-- ========== END HEADER ========== -->
+</template>

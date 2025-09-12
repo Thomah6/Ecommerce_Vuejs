@@ -1,0 +1,33 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "nom": "Hermès",
+      "email": "hermes@example.com",
+      "password": "motdepasse123",
+      "avatar":"https://images.unsplash.com/photo-1510706019500-d23a509eecd4?q=80&w=2667&auto=format&fit=facearea&facepad=3&w=320&h=320&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "role": "admin",
+      "date_creation": "2025-09-10T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "nom": "Alice",
+      "email": "alice@example.com",
+      "password": "alicepass456",
+      "role": "user",
+            "avatar":"https://images.unsplash.com/photo-1510706019500-d23a509eecd4?q=80&w=2667&auto=format&fit=facearea&facepad=3&w=320&h=320&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+
+      "date_creation": "2025-09-10T12:05:00Z"
+    },
+    {
+      "id": 3,
+      "nom": "Bob",
+      "email": "bob@example.com",
+      "password": "bobpass789",
+            "avatar":"https://images.unsplash.com/photo-1510706019500-d23a509eecd4?q=80&w=2667&auto=format&fit=facearea&facepad=3&w=320&h=320&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+
+      "role": "user",
+      "date_creation": "2025-09-10T12:10:00Z"
+    }
+  ]
+}
