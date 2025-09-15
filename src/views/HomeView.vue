@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, provide } from 'vue'
 import ProductsList from '@/components/ProductsList.vue'
-import categorys from '@/components/categorys.vue'
+import Categorys from '@/components/Categorys.vue'
 import axios from 'axios'
 import AddCart from '@/components/AddCart.vue'
 const datas = ref([])
