@@ -13,6 +13,7 @@ const modelQuantity = computed({
 })
 
 function confirmAddToCart() {
+  // Émettre le produit complet au lieu de seulement l'ID
   emit('add-to-cart', { 
     ...props.selectedProduct, 
     quantity: props.selectedQuantity 

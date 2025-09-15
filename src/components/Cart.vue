@@ -31,18 +31,14 @@ watch(
   },
   { deep: true },
 )
-watch(()=>localStorage.getItem('cart'), ()=>{
-    cart.value = JSON.parse(localStorage.getItem('cart'))
-})
+
 function removeFromCart(id) {
   const idx = cart.value.findIndex((item) => item.id === id)
   if (idx !== -1) cart.value.splice(idx, 1)
 }
-
 function closeCart() {
   emit('close-cart') // Émettre l'événement de fermeture
 }
-
 const totalCart = () => cart.value.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
 defineProps(['showCart'])
